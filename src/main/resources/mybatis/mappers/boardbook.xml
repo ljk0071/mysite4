@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="boardbook">
+
+	<select id="SelectAll" resultType="BoardVo">
+		<![CDATA[
+		select b.no 
+			,b.title 
+			,b.content 
+			,u.name 
+			,b.hit 
+			,b.reg_date as regDate 
+			,b.user_no as userNo 
+		from board b, users u 
+		where b.user_no = u.no 
+		order by no desc 
+		]]>
+	</select>
+	
+	<select id="SearchAll" parameterType="String" resultType="BoardVo">
+		<![CDATA[
+		select b.no 
+			,b.title 
+			,b.content 
+			,u.name 
+			,b.hit 
+			,b.reg_date as regDate 
+			,b.user_no as userNo 
+		from board b, users u 
+		where b.user_no = u.no 
+		and (title like '%'||#{title} 
+		or title like '%'||#{title}||'%' 
+		or title like #{title}||'%') 
+		]]>
+	</select>
+	
+	<select id="Select" parameterType="int" resultType="BoardVo">
+		<![CDATA[
+		select b.no 
+			,b.title 
+			,b.content 
+			,u.name 
+			,b.hit 
+			,b.reg_date as regDate 
+			,b.user_no as userNo 
+		from board b, users u 
+		where b.user_no = u.no 
+		and b.no = #{bNo} 
+		]]>
+	</select>
+	
+	<insert id="Insert" parameterType="BoardVo">
+		<![CDATA[
+		insert into board(no, title, content, reg_date, user_no) 
+		values(seq_board_no.nextval 
+				,#{title} 
+				,#{content} 
+				,sysdate 
+				,#{userNo}) 
+		]]>
+	</insert>
+	
+	<update id="Update" parameterType="BoardVo">
+		<![CDATA[
+		update board 
+		set title = #{title} 
+			,content = #{content} 
+			,reg_date = sysdate 
+		where no = #{no} 
+		]]>
+	</update>
+	
+	<update id="UpdateHit" parameterType="int">
+		<![CDATA[
+		update board 
+		set hit = hit+1 
+		where no = #{no} 
+		]]>
+	</update>
+	
+	<delete id="Delete" parameterType="int">
+		<![CDATA[
+			delete from board 
+			where no = #{bNo} 
+		]]>
+	</delete>
+
+</mapper>
