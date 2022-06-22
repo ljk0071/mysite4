@@ -50,17 +50,15 @@ public class BoardController {
 		}
 	}
 
-	@RequestMapping(value = "/read/{no}", method = { RequestMethod.GET, RequestMethod.POST })
-	public String read(Model model, @PathVariable("no") int bNo) {
-		try {
-			bService.doUpdateBoardHit(bNo);
-			model.addAttribute("bVo", bService.getBoard(bNo));
-			return "/board/read";
-		} catch (NumberFormatException e) {
+	@RequestMapping(value = "/read/{no}/{cancel}", method = { RequestMethod.GET, RequestMethod.POST })
+	public String read(Model model, @PathVariable("no") int bNo, @PathVariable("cancel") int cancel) {
+		if (cancel == 0) {
 			model.addAttribute("bVo", bService.getBoard(bNo));
 			return "/board/read";
 		}
-
+		bService.doUpdateBoardHit(bNo);
+		model.addAttribute("bVo", bService.getBoard(bNo));
+		return "/board/read";
 	}
 
 	@RequestMapping(value = "/modifyForm/{no}", method = { RequestMethod.GET, RequestMethod.POST })

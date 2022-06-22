@@ -72,8 +72,7 @@
 							<div class="form-group">
 								<textarea id="txt-content" name="content">${bVo.content}</textarea>
 							</div>
-							
-							<a id="btn_cancel" href="../read/${bVo.no}">취소</a>
+							<a id="btn_cancel" href="${pageContext.request.contextPath}/board/read/${bVo.no}/0">취소</a>
 							<button id="btn_modify" type="submit" >수정</button>
 						</form>
 						<!-- //form -->

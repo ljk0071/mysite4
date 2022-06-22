@@ -67,7 +67,7 @@
 									<c:forEach items="${bList}" var="bVo" varStatus="status">
 										<tr>
 											<td>${bVo.no}</td>
-											<td><a href="${pageContext.request.contextPath}/board/read/${bVo.no}">${bVo.title}</a></td>
+											<td><a href="${pageContext.request.contextPath}/board/read/${bVo.no}/-1">${bVo.title}</a></td>
 											<td>${bVo.name}</td>
 											<td>${bVo.hit}</td>
 											<td>${bVo.regDate}</td>
@@ -81,7 +81,7 @@
 									<c:forEach items="${sList}" var="sVo" varStatus="status">
 										<tr>
 											<td>${sVo.no}</td>
-											<td><a href="${pageContext.request.contextPath}/board/read/${sVo.no}">${sVo.title}</a></td>
+											<td><a href="${pageContext.request.contextPath}/board/read/${sVo.no}/-1">${sVo.title}</a></td>
 											<td>${sVo.name}</td>
 											<td>${sVo.hit}</td>
 											<td>${sVo.regDate}</td>
