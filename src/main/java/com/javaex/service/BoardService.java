@@ -22,8 +22,15 @@ public class BoardService {
 		return bDao.SelectAll(title);
 	}
 
-	public BoardVo getBoard(int uNo) {
-		return bDao.Select(uNo);
+	public BoardVo getBoard(int bNo,int cancel) {
+		if (cancel == 0) {
+			return bDao.Select(bNo);
+		}
+		bDao.UpdateHit(bNo);
+		return bDao.Select(bNo);
+	}
+	public BoardVo getBoard(int bNo) {
+		return bDao.Select(bNo);
 	}
 
 	public int doAddBoard(BoardVo bVo) {

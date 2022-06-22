@@ -52,12 +52,7 @@ public class BoardController {
 
 	@RequestMapping(value = "/read/{no}/{cancel}", method = { RequestMethod.GET, RequestMethod.POST })
 	public String read(Model model, @PathVariable("no") int bNo, @PathVariable("cancel") int cancel) {
-		if (cancel == 0) {
-			model.addAttribute("bVo", bService.getBoard(bNo));
-			return "/board/read";
-		}
-		bService.doUpdateBoardHit(bNo);
-		model.addAttribute("bVo", bService.getBoard(bNo));
+		model.addAttribute("bVo", bService.getBoard(bNo, cancel));
 		return "/board/read";
 	}
 
