@@ -26,14 +26,9 @@ public class BoardDao {
 		return count;
 	}
 
-	public List<BoardVo> SelectAll() {
-		List<BoardVo> bList = sqlSession.selectList("boardbook.SelectAll");
-		return bList;
-	}
-
 	public List<BoardVo> SelectAll(String title) {
-		List<BoardVo> sList = sqlSession.selectList("boardbook.SearchAll", title);
-		return sList;
+		List<BoardVo> bList = sqlSession.selectList("boardbook.SelectAll", title);
+		return bList;
 	}
 
 	public BoardVo Select(int bNo) {

@@ -3,7 +3,7 @@
 
 <mapper namespace="boardbook">
 
-	<select id="SelectAll" resultType="BoardVo">
+	<select id="SelectAll" parameterType="String" resultType="BoardVo">
 		<![CDATA[
 		select b.no 
 			,b.title 
@@ -13,26 +13,14 @@
 			,b.reg_date as regDate 
 			,b.user_no as userNo 
 		from board b, users u 
-		where b.user_no = u.no 
-		order by no desc 
+		where b.user_no = u.no
 		]]>
-	</select>
-	
-	<select id="SearchAll" parameterType="String" resultType="BoardVo">
+		<if test='value != null and value != ""'> 
+			and title like '%'||#{title}||'%' 
+		</if>
 		<![CDATA[
-		select b.no 
-			,b.title 
-			,b.content 
-			,u.name 
-			,b.hit 
-			,b.reg_date as regDate 
-			,b.user_no as userNo 
-		from board b, users u 
-		where b.user_no = u.no 
-		and (title like '%'||#{title} 
-		or title like '%'||#{title}||'%' 
-		or title like #{title}||'%') 
-		]]>
+		order by no desc
+		]]> 
 	</select>
 	
 	<select id="Select" parameterType="int" resultType="BoardVo">

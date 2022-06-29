@@ -17,7 +17,7 @@ public class GuestDao {
 	private SqlSession sqlSession;
 
 	public int Insert(GuestVo gVo) {
-		count = sqlSession.insert("guestbook.Insert", gVo);
+		count = sqlSession.insert("guestbook.InsertSelectKey", gVo);
 		return count;
 	}
 

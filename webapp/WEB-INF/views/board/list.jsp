@@ -44,7 +44,7 @@
 	
 				<div id="board">
 					<div id="list">
-						<form action="./list" method="get">
+						<form action="./list" method="post">
 							<div class="form-group text-right">
 								<input type="text" name="title" value="">
 								<button type="submit" id=btn_search>검색</button>
@@ -62,36 +62,18 @@
 								</tr>
 							</thead>
 							<tbody>
-							<c:choose>
-								<c:when test="${sList == null}">
-									<c:forEach items="${bList}" var="bVo" varStatus="status">
-										<tr>
-											<td>${bVo.no}</td>
-											<td><a href="${pageContext.request.contextPath}/board/read/${bVo.no}/-1">${bVo.title}</a></td>
-											<td>${bVo.name}</td>
-											<td>${bVo.hit}</td>
-											<td>${bVo.regDate}</td>
-											<c:if test="${authUser.no == bVo.userNo}">
-												<td><a href="./delete/${bVo.no}">[삭제]</a></td>
-											</c:if>
-										</tr>
-									</c:forEach>
-								</c:when>
-								<c:when test="${sList != null}">
-									<c:forEach items="${sList}" var="sVo" varStatus="status">
-										<tr>
-											<td>${sVo.no}</td>
-											<td><a href="${pageContext.request.contextPath}/board/read/${sVo.no}/-1">${sVo.title}</a></td>
-											<td>${sVo.name}</td>
-											<td>${sVo.hit}</td>
-											<td>${sVo.regDate}</td>
-											<c:if test="${authUser.no == sVo.userNo}">
-												<td><a href="./delete/${sVo.no}">[삭제]</a></td>
-											</c:if>
-										</tr>
-									</c:forEach>
-								</c:when>
-							</c:choose>
+							<c:forEach items="${bList}" var="bVo" varStatus="status">
+								<tr>
+									<td>${bVo.no}</td>
+									<td><a href="${pageContext.request.contextPath}/board/read/${bVo.no}/-1">${bVo.title}</a></td>
+									<td>${bVo.name}</td>
+									<td>${bVo.hit}</td>
+									<td>${bVo.regDate}</td>
+									<c:if test="${authUser.no == bVo.userNo}">
+										<td><a href="./delete/${bVo.no}">[삭제]</a></td>
+									</c:if>
+								</tr>
+							</c:forEach>
 							</tbody>
 						</table>
 			

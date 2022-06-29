@@ -22,16 +22,10 @@ public class BoardController {
 	private BoardService bService;
 
 	@RequestMapping(value = "/list", method = { RequestMethod.GET, RequestMethod.POST })
-	public String list(Model model, @RequestParam(value = "title", required=false, defaultValue="-1") String title) {
-		if (title.equals("-1")) {
-			List<BoardVo> bList = bService.getBoardList();
-			model.addAttribute("bList", bList);
-			return "/board/list";
-		} else {
-			List<BoardVo> sList = bService.getSearchList(title);
-			model.addAttribute("sList", sList);
-			return "/board/list";
-		}
+	public String list(Model model, @RequestParam(value = "title", required=false) String title) {
+		List<BoardVo> bList = bService.getBoardList(title);
+		model.addAttribute("bList", bList);
+		return "/board/list";
 	}
 
 	@RequestMapping(value = "/writeform", method = { RequestMethod.GET, RequestMethod.POST })

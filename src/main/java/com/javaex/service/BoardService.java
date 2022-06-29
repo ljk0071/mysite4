@@ -14,11 +14,7 @@ public class BoardService {
 	@Autowired
 	private BoardDao bDao;
 
-	public List<BoardVo> getBoardList() {
-		return bDao.SelectAll();
-	}
-	
-	public List<BoardVo> getSearchList(String title) {
+	public List<BoardVo> getBoardList(String title) {
 		return bDao.SelectAll(title);
 	}
 

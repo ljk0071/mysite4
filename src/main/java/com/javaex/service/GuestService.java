@@ -20,8 +20,15 @@ public class GuestService {
 	public GuestVo getGuset(int gNo) {
 		return gDao.Select(gNo);
 	}
-	public int doAddGuest(GuestVo gVo) {
-		return gDao.Insert(gVo);
+	public GuestVo doAddGuest(GuestVo gVo) {
+		
+		gDao.Insert(gVo);
+		
+		int no = gVo.getNo();
+		
+		GuestVo gVo2 = gDao.Select(no);
+		
+		return gVo2;
 	}
 	public int doDeleteGuest(int gNo) {
 		return gDao.Delete(gNo);
