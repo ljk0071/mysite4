@@ -30,7 +30,12 @@ public class GuestService {
 		
 		return gVo2;
 	}
-	public int doDeleteGuest(int gNo) {
-		return gDao.Delete(gNo);
+	public int doDeleteGuest(GuestVo gVo) {
+		int count = gDao.Delete(gVo);
+		if ( count == 1 ) {
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 }

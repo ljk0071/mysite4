@@ -45,10 +45,11 @@
 
 	</insert>
 	
-	<delete id="Delete" parameterType="int">
+	<delete id="Delete" parameterType="GuestVo">
 		<![CDATA[
 			delete from guestbook 
-			where no = #{gNo} 
+			where no = #{no} 
+			and password = #{password}
 		]]>
 	</delete>
 

@@ -6,13 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
-<link href="${pageContext.request.contextPath}/assets/css/mysite.css"
-	rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath}/assets/css/guestbook.css"
-	rel="stylesheet" type="text/css">
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/assets/js/jquery-1.12.4.js"></script>
+<link href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/assets/css/mysite.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/assets/css/guestbook.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.js"></script>
 </head>
 
 <body>
@@ -65,17 +63,17 @@
 							<tr>
 								<td colspan="4"><textarea name="content" cols="72" rows="5"></textarea></td>
 							</tr>
-							<c:if test="${param.result == 'fail'}">
-								<p style="color: red">빈칸을 모두 채워주세요.</p>
-							</c:if>
+<%-- 							<c:if test="${param.result == 'fail'}"> --%>
+<!-- 								<p style="color: red">빈칸을 모두 채워주세요.</p> -->
+<%-- 							</c:if> --%>
 							<tr class="button-area">
-								<td colspan="4" class="text-center"><button id="btnSubmit"
-										type="submit">등록</button></td>
+								<td colspan="4" class="text-center">
+								<button id="btnSubmit" type="submit">등록</button></td>
 							</tr>
 						</tbody>
 
 					</table>
-
+					
 					<!-- 					</form>	 -->
 					<div id="list">
 						<!-- js영역 -->
@@ -93,6 +91,25 @@
 
 		<c:import url="/WEB-INF/views/include/footer.jsp"></c:import>
 		<!-- //footer -->
+		
+		<div id="delModal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Modal title</h4>
+					</div>
+					<div class="modal-body">
+						비밀번호 <input type="password" name="password" value="">
+						<input type="hidden" name="no" value="">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+						<button id="modalDel" type="button" class="btn btn-danger">삭제</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 	</div>
 	<!-- //wrap -->
 
@@ -102,8 +119,38 @@
 	$(document).ready(function() {
 		fetchList();
 	});
-
+	
 	$("#btnSubmit").on("click", function() {
+
+		var name = $("[name='name']").val();
+		var password = $("[name='password']").val();
+		var content = $("[name=content]").val();
+
+		//데이터 객체로 묶기
+		var gVo = {
+			name : name,
+			password : password,
+			content : content
+		};
+		
+		$.ajax({
+
+			url : "${pageContext.request.contextPath}/api/guestbook/add2",
+			type : "post",
+			contentType : "application/json",
+			data : JSON.stringfy(gVo),
+
+			dataType : "json",
+			success : function(gVo) {
+				
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	});
+
+	/* $("#btnSubmit").on("click", function() {
 
 		var name = $("[name='name']").val();
 		var password = $("[name='password']").val();
@@ -135,8 +182,44 @@
 				console.error(status + " : " + error);
 			}
 		});
-	});
+	}); */
+	$("#list").on("click", ".btnDel", function() {
+		var $this = $(this);
+		var no = $this.data("no");
+		$("[name='no']").val(no);
+		$("#delModal [name='password']").val("");
+		$("#delModal").modal("show");
+	})
+	$("#modalDel").on("click", function() {
+		var password = $("#delModal [name='password']").val();
+		var no = $("#delModal [name='no']").val();
+		var gVo = {}
+		gVo.password = password;
+		gVo.no = no;
+		
+		$.ajax({
 
+			url : "${pageContext.request.contextPath}/api/guestbook/delete",
+			type : "post",
+			// 		contentType : "application/json",
+			data : gVo,
+
+			dataType : "json",
+			success : function(result) {
+				if ( result == 1 ) {
+					$("#t"+no).remove();
+					$("#delModal").modal("hide");
+				} else {
+					$("#delModal [name='password']").val("");
+					alert("다시 시도해 주세요");
+				}
+				
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	})
 	function fetchList() {
 		$.ajax({
 
@@ -161,7 +244,7 @@
 	function render(gVo, opt) {
 		// 	$("#list").append(gVo.name + "<br>")
 		var str = "";
-		str += "<table class='guestRead'>";
+		str += "<table id='t"+gVo.no+"' class='guestRead'>";
 		str += "	<colgroup>";
 		str += "		<col style='width: 10%;'>";
 		str += "		<col style='width: 40%;'>";
@@ -172,8 +255,7 @@
 		str += "		<td>" + gVo.no + "</td>";
 		str += "		<td>" + gVo.name + "</td>";
 		str += "		<td>" + gVo.regDate + "</td>";
-		str += "		<td><a href='./deleteform?no=" + gVo.no
-				+ " target='balnk'>[삭제]</a></td>";
+		str += '		<td><button type="button" class="btnDel" data-no="'+gVo.no+'">삭제</button></td>';
 		str += "	</tr>";
 		str += "	<tr>";
 		str += "		<td colspan=4 class='text-left'>" + gVo.content + "</td>";

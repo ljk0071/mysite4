@@ -21,8 +21,8 @@ public class GuestDao {
 		return count;
 	}
 
-	public int Delete(int gNo) {
-		count = sqlSession.delete("guestbook.Delete", gNo);
+	public int Delete(GuestVo gVo) {
+		count = sqlSession.delete("guestbook.Delete", gVo);
 		return count;
 	}
 

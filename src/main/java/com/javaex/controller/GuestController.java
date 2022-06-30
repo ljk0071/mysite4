@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.javaex.service.GuestService;
 import com.javaex.vo.GuestVo;
@@ -42,12 +40,17 @@ public class GuestController {
 	}
 
 	@RequestMapping(value = "/delete/{no}", method = { RequestMethod.GET, RequestMethod.POST })
-	public String delete(@PathVariable("no") int gNo, @RequestParam(value = "password") String pw) {
-		if (pw.equals(gService.getGuset(gNo).getPassword())) {
-			gService.doDeleteGuest(gNo);
+	public String delete(@ModelAttribute GuestVo gVo) {
+		int count = gService.doDeleteGuest(gVo);
+		if ( count == -1) {
+			System.out.println("비밀번호가 다릅니다");
+			return "redirect:../deleteform?result=fail&no=" + gVo.getNo();
+		} else if (count == 1){
+			System.out.println("성공");
 			return "redirect:../list";
 		} else {
-			return "redirect:../deleteform?result=fail&no=" + gNo;
+			System.out.println("try again");
+			return "redirect:../deleteform?result=fail&no=" + gVo.getNo();
 		}
 	}
 }

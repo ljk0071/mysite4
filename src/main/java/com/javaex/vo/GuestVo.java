@@ -5,6 +5,11 @@ public class GuestVo {
 	private String name, password, content, regDate;
 	private int no;
 
+	public GuestVo(int no, String password) {
+		this.no = no;
+		this.password = password;
+	}
+	
 	public GuestVo(String name, String password, String content) {
 		this.name = name;
 		this.password = password;
@@ -65,7 +70,7 @@ public class GuestVo {
 	@Override
 	public String toString() {
 		return "GuestVo [name=" + name + ", password=" + password + ", content=" + content + ", regDate=" + regDate
-				+ ", No=" + no + "]";
+				+ ", no=" + no + "]";
 	}
 
 }
