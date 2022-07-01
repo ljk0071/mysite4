@@ -138,7 +138,7 @@
 			url : "${pageContext.request.contextPath}/api/guestbook/add2",
 			type : "post",
 			contentType : "application/json",
-			data : JSON.stringfy(gVo),
+			data : JSON.stringify(gVo),
 
 			dataType : "json",
 			success : function(gVo) {
@@ -201,7 +201,7 @@
 
 			url : "${pageContext.request.contextPath}/api/guestbook/delete",
 			type : "post",
-			// 		contentType : "application/json",
+// 			 		contentType : "application/json",
 			data : gVo,
 
 			dataType : "json",
@@ -217,7 +217,7 @@
 			},
 			error : function(XHR, status, error) {
 				console.error(status + " : " + error);
-			}
+			}//
 		});
 	})
 	function fetchList() {

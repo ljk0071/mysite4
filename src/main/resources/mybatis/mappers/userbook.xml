@@ -27,6 +27,14 @@
 		]]>
 	</select>
 	
+	<select id="SelectChkId" parameterType="String" resultType="String">
+		<![CDATA[
+		select id
+		from users
+		where id = #{id}
+		]]>
+	</select>
+	
 	<select id="SelectLogin" parameterType="map" resultType="UserVo">
 		<![CDATA[
 		select no

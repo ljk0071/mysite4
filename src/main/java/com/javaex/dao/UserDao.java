@@ -29,6 +29,11 @@ public class UserDao {
 		return uVo;
 	}
 	
+	public String Select(String id) {
+		String chkId = sqlSession.selectOne("userbook.SelectChkId", id);
+		return chkId;
+	}
+	
 	public UserVo Select(String id, String pw) {
 		Map<String, Object> uMap = new HashMap<String, Object>();
 		uMap.put("id", id);
