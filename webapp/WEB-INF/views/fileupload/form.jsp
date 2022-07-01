@@ -23,7 +23,8 @@
 		<!-- 해더 네비 -->
 		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 		<!-- //해더 네비 -->
-
+		
+		<c:import url="/WEB-INF/views/include/nav.jsp"></c:import>
 		<div id="container" class="clearfix">
 			<!-- 게시판 aside -->
 			<c:import url="/WEB-INF/views/include/galleryAside.jsp"></c:import>
@@ -76,6 +77,7 @@
 	<!-- //wrap -->
 
 </body>
+
 
 </html>
 
