@@ -29,8 +29,11 @@ public class GalleryController {
 	@RequestMapping(value="/upload", method= {RequestMethod.GET,RequestMethod.POST})
 	public String upload(@ModelAttribute GalleryVo gVo) {
 		System.out.println("GalleryController>upload()");
-		
-		gService.save(gVo);
+		try {
+			gService.save(gVo);
+		}catch (StringIndexOutOfBoundsException e) {
+			System.out.println("retry");
+		}
 		
 		return "redirect:./list";
 	}
