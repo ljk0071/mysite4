@@ -30,14 +30,12 @@ public class RboardController {
 	@RequestMapping(value = "/writeform/{gNo}/{oNo}/{depth}", method = { RequestMethod.GET, RequestMethod.POST })
 	public String writeform(@PathVariable("gNo") int gNo, @PathVariable("oNo") int oNo, @PathVariable("depth") int depth, Model model) {
 		RboardVo rVo = new RboardVo(gNo, oNo, depth);
-		System.out.println( rVo.getGroupNo());
 		model.addAttribute("rVo", rVo);
 		return "/rboard/writeForm";
 	}
 	
 	@RequestMapping(value = "/write", method = { RequestMethod.GET, RequestMethod.POST })
 	public String write(@ModelAttribute RboardVo rVo) {
-		System.out.println(rVo.getGroupNo());
 		if(rVo.getTitle() != "" && rVo.getContent() != "") {
 			rService.doAddBoard(rVo);
 			return "redirect:./list";

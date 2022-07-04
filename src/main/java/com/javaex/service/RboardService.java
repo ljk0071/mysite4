@@ -15,6 +15,7 @@ public class RboardService {
 	private RboardDao rDao;
 	private String prefix = "";
 	private int prefixcnt = 0;
+	private int cnt = 0;
 	
 	public List<RboardVo> getRboardList() {
 		
@@ -49,7 +50,14 @@ public class RboardService {
 		}while(prefixcnt > 0);
 		rVo.setTitle(prefix + rVo.getTitle());
 		prefix = "";
-		return rDao.InsertRepl(rVo);
+		if (rVo.getDepth() == 0) {
+			cnt += rDao.UpdateOrderNo(rVo.getGroupNo());
+			cnt += rDao.InsertRepl(rVo);
+		}else {
+			cnt += rDao.UpdateReplOrderNo(rVo.getGroupNo(), rVo.getOrderNo());
+			cnt += rDao.InsertRepl(rVo);
+		}
+		return cnt;
 	}
 	
 	public int doDeleteRboard(int rNo) {

@@ -1,6 +1,8 @@
 package com.javaex.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,19 @@ public class RboardDao {
 		count = sS.update("rboardbook.Update", rVo);
 		return count;
 
+	}
+	
+	public int UpdateOrderNo(int groupNo) {
+		count = sS.update("rboardbook.UpdateOrderNo", groupNo);
+		return count;
+	}
+	
+	public int UpdateReplOrderNo(int groupNo, int orderNo) {
+		Map<String, Object> replMap = new HashMap<String, Object>();
+		replMap.put("groupNo", groupNo);
+		replMap.put("orderNo", orderNo);
+		count = sS.update("rboardbook.UpdateReplOrderNo", replMap);
+		return count;
 	}
 	
 	public int Delete(int rNo) {
