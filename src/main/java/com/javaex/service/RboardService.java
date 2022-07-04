@@ -50,13 +50,8 @@ public class RboardService {
 		}while(prefixcnt > 0);
 		rVo.setTitle(prefix + rVo.getTitle());
 		prefix = "";
-		if (rVo.getDepth() == 0) {
-			cnt += rDao.UpdateOrderNo(rVo.getGroupNo());
-			cnt += rDao.InsertRepl(rVo);
-		}else {
-			cnt += rDao.UpdateReplOrderNo(rVo.getGroupNo(), rVo.getOrderNo());
-			cnt += rDao.InsertRepl(rVo);
-		}
+		cnt += rDao.UpdateReplOrderNo(rVo.getGroupNo(), rVo.getOrderNo());
+		cnt += rDao.InsertRepl(rVo);
 		return cnt;
 	}
 	

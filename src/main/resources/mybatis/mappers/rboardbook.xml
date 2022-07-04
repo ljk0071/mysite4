@@ -76,15 +76,6 @@
 		]]>
 	</update>
 	
-	<update id="UpdateOrderNo" parameterType="int">
-		<![CDATA[
-		update rboard 
-		set order_no = order_no + 1 
-		where group_no = #{groupNo} 
-		and order_no >= 2 
-		]]>
-	</update>
-	
 	<update id="UpdateReplOrderNo" parameterType="map">
 		<![CDATA[
 		update rboard 

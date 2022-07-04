@@ -49,11 +49,6 @@ public class RboardDao {
 
 	}
 	
-	public int UpdateOrderNo(int groupNo) {
-		count = sS.update("rboardbook.UpdateOrderNo", groupNo);
-		return count;
-	}
-	
 	public int UpdateReplOrderNo(int groupNo, int orderNo) {
 		Map<String, Object> replMap = new HashMap<String, Object>();
 		replMap.put("groupNo", groupNo);
