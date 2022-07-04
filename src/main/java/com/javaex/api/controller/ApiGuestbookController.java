@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.javaex.service.GuestService;
+import com.javaex.service.GuestService2;
 import com.javaex.vo.GuestVo;
 
 @Controller
 public class ApiGuestbookController {
 	
 	@Autowired
-	private GuestService gService;
+	private GuestService2 gService;
 
 	@RequestMapping(value="/api/guestbook/addList", method= {RequestMethod.GET, RequestMethod.POST})
 	public String addList() {

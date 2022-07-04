@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="rboardbook">
+
+	<select id="SelectAll" resultType="RboardVo">
+		<![CDATA[
+		select r.no as no
+			,r.user_no as userNo
+			,u.name as name
+			,title 
+			,content 
+			,hit 
+			,reg_date as regDate
+			,group_no as groupNo
+			,order_no as orderNo
+			,depth 
+		from rboard r, users u 
+		where r.user_no = u.no
+		order by group_no desc, order_no asc
+		]]>
+	</select>
+	
+	<select id="Select" parameterType="int" resultType="RboardVo">
+		<![CDATA[
+		select r.no as no
+			,r.user_no as userNo 
+			,u.name as name
+			,title 
+			,content 
+			,hit 
+			,reg_date as regDate 
+			,group_no as groupNo 
+			,order_no as orderNo 
+			,depth 
+		from rboard r, users u 
+		where r.user_no = u.no 
+		and r.no = #{rNo} 
+		]]>
+	</select>
+	
+	<insert id="Insert" parameterType="RboardVo">
+		<![CDATA[
+		insert into rboard (no, user_no, title, content, reg_date, group_no)
+		values(seq_rboard_no.nextval 
+				,#{userNo} 
+				,#{title} 
+				,#{content} 
+				,sysdate 
+				,seq_rboard_groupNo.nextval)  
+		]]>
+	</insert>
+	
+	<insert id="InsertRepl" parameterType="RboardVo">
+		<![CDATA[
+		insert into rboard 
+		values(seq_rboard_no.nextval 
+				,#{userNo} 
+				,#{title} 
+				,#{content} 
+				,#{hit} 
+				,sysdate 
+				,#{groupNo} 
+				,#{orderNo} + 1
+				,#{depth} + 1) 
+		]]>
+	</insert>
+	
+	<update id="Update" parameterType="RboardVo">
+		<![CDATA[
+		update rboard 
+		set title = #{title} 
+			,content = #{content} 
+			,reg_date = sysdate 
+		where no = #{no} 
+		]]>
+	</update>
+	
+	<update id="UpdateHit" parameterType="int">
+		<![CDATA[
+		update rboard 
+		set hit = hit+1 
+		where no = #{rNo} 
+		]]>
+	</update>
+	
+	
+	<delete id="Delete" parameterType="int">
+		<![CDATA[
+			delete from rboard 
+			where no = #{rNo} 
+		]]>
+	</delete>
+
+</mapper>
