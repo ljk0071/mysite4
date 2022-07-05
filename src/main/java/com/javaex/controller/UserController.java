@@ -1,5 +1,7 @@
 package com.javaex.controller;
 
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,12 @@ public class UserController {
 	private UserService uService;
 	
 	@RequestMapping(value = "/login", method = { RequestMethod.GET, RequestMethod.POST })
-	public String login() {
+	public String login(HttpServletRequest request) {
+		String url = request.getHeader("Referer");
+		if (url != null && !url.contains("/login")) {
+			request.getSession().setAttribute("prevPage", url);
+	    }
+		System.out.println(url);
 		return "/user/loginForm";
 	}
 	@RequestMapping(value = "/join", method = { RequestMethod.GET, RequestMethod.POST })
@@ -40,7 +47,8 @@ public class UserController {
 	public String loginCheck(HttpSession session, @RequestParam("id") String id, @RequestParam("pw") String pw) {
 		if (uService.getUser(id, pw) != null) {
 			session.setAttribute("authUser", uService.getUser(id, pw));
-			return "redirect:../main";
+			String url = (String)session.getAttribute("prevPage");
+		    return "redirect:"+url;
 		} else {
 			return "redirect:/login?result=fail";
 		}
@@ -48,7 +56,9 @@ public class UserController {
 	@RequestMapping(value = "/logout", method = {RequestMethod.GET, RequestMethod.POST})
 	public String logout(HttpSession session) {
 		session.removeAttribute("authUser");
-		return "redirect:../main";
+		String url = (String)session.getAttribute("prevPage");
+		session.invalidate();
+	    return "redirect:"+url;
 	}
 	
 	@RequestMapping(value = "/modifyForm", method = { RequestMethod.GET, RequestMethod.POST })

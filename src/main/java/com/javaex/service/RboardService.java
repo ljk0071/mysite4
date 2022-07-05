@@ -34,6 +34,7 @@ public class RboardService {
 		boolean prev = (startPageNum!=1) ? true : false;
 		
 		boolean next = false;
+		List<RboardVo> rList;
 		
 		
 		if( keyword == null || keyword == "" ) {
@@ -43,17 +44,7 @@ public class RboardService {
 			}else {
 				endPageNum = (int)Math.ceil(totalCnt/(double)listCnt);
 			}
-			
-			List<RboardVo> rList = rDao.SelectAll(startRnum, endRnum);
-			pMap.put("rList", rList);
-			pMap.put("prev", prev);
-			pMap.put("next", next);
-			pMap.put("startPageNum", startPageNum);
-			pMap.put("endPageNum", endPageNum);
-			pMap.put("crtPage", crtPage);
-			pMap.put("pageBtnCount", pageBtnCount);
-			
-			return pMap;
+			rList = rDao.SelectAll(startRnum, endRnum);
 		} else {
 			int searchCnt = rDao.SelectSearchCnt(keyword);
 			if ((listCnt*endPageNum) < searchCnt) {
@@ -61,18 +52,17 @@ public class RboardService {
 			}else {
 				endPageNum = (int)Math.ceil(searchCnt/(double)listCnt);
 			}
-			
-			List<RboardVo> rList = rDao.SelectAll(startRnum, endRnum, keyword);
-			pMap.put("rList", rList);
-			pMap.put("prev", prev);
-			pMap.put("next", next);
-			pMap.put("startPageNum", startPageNum);
-			pMap.put("endPageNum", endPageNum);
-			pMap.put("crtPage", crtPage);
-			pMap.put("pageBtnCount", pageBtnCount);
+			rList = rDao.SelectAll(startRnum, endRnum, keyword);
 			pMap.put("keyword", keyword);
-			return pMap;
 		}
+		pMap.put("rList", rList);
+		pMap.put("prev", prev);
+		pMap.put("next", next);
+		pMap.put("startPageNum", startPageNum);
+		pMap.put("endPageNum", endPageNum);
+		pMap.put("crtPage", crtPage);
+		pMap.put("pageBtnCount", pageBtnCount);
+		return pMap;
 	}
 	
 	public RboardVo getRboard(int rNo,int cancel) {
