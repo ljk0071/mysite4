@@ -1,6 +1,6 @@
 package com.javaex.controller;
 
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.javaex.service.RboardService;
 import com.javaex.vo.RboardVo;
@@ -21,9 +22,9 @@ public class RboardController {
 	private RboardService rService;
 	
 	@RequestMapping(value = "/list", method = { RequestMethod.GET, RequestMethod.POST })
-	public String list(Model model) {
-		List<RboardVo> rList = rService.getRboardList();
-		model.addAttribute("rList", rList);
+	public String list(Model model, @RequestParam(value = "crtPage", required=false, defaultValue = "1") int crtPage,@RequestParam(value = "keyword", required=false) String keyword) {
+		Map<String, Object> pMap = rService.getRboardList(crtPage, keyword);
+		model.addAttribute("pMap", pMap);
 		return "/rboard/list";
 	}
 	

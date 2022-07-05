@@ -46,7 +46,7 @@
 					<div id="list">
 						<form action="./list" method="post">
 							<div class="form-group text-right">
-								<input type="text" name="title" value="">
+								<input type="text" name="keyword" value="">
 								<button type="submit" id=btn_search>검색</button>
 							</div>
 						</form>
@@ -62,7 +62,7 @@
 								</tr>
 							</thead>
 							<tbody>
-							<c:forEach items="${rList}" var="rVo" varStatus="status">
+							<c:forEach items="${pMap.rList}" var="rVo">
 								<tr>
 									<td>${rVo.no}</td>
 									<td><a href="${pageContext.request.contextPath}/rboard/read/${rVo.no}/-1">${rVo.title}</a></td>
@@ -78,20 +78,48 @@
 						</table>
 			
 						<div id="paging">
-							<ul>
-								<li><a href="">◀</a></li>
-								<li class="active"><a href="">1</a></li>
-								<li><a href="">2</a></li>
-								<li><a href="">3</a></li>
-								<li><a href="">4</a></li>
-								<li><a href="">5</a></li>
-								<li><a href="">6</a></li>
-								<li><a href="">7</a></li>
-								<li><a href="">8</a></li>
-								<li><a href="">9</a></li>
-								<li><a href="">10</a></li>
-								<li><a href="">▶</a></li>
-							</ul>
+						<c:choose>
+							<c:when test="${pMap.keyword == null || pMap.keyword == ''}">
+								<ul>
+									<c:if test="${pMap.prev == true}">
+										<li><a href="${pageContext.request.contextPath}/rboard/list?crtPage=${pMap.startPageNum-pMap.pageBtnCount}">◀</a></li>
+									</c:if>
+									<c:forEach begin="${pMap.startPageNum}" end="${pMap.endPageNum}" step="1" var="page">
+										<c:choose>
+											<c:when test="${pMap.crtPage==page}">
+												<li class="active"><a href="${pageContext.request.contextPath}/rboard/list?crtPage=${page}">${page}</a></li>
+											</c:when>
+											<c:otherwise>
+												<li><a href="${pageContext.request.contextPath}/rboard/list?crtPage=${page}">${page}</a></li>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+									<c:if test="${pMap.next == true}">
+										<li><a href="${pageContext.request.contextPath}/rboard/list?crtPage=${pMap.endPageNum+1}">▶</a></li>
+									</c:if>
+								</ul>
+							</c:when>
+							<c:otherwise>
+								<ul>
+									<c:if test="${pMap.prev == true}">
+										<li><a href="${pageContext.request.contextPath}/rboard/list?crtPage=${pMap.startPageNum-pMap.pageBtnCount}&keyword=${pMap.keyword}">◀</a></li>
+									</c:if>
+									<c:forEach begin="${pMap.startPageNum}" end="${pMap.endPageNum}" step="1" var="page">
+										<c:choose>
+											<c:when test="${pMap.crtPage==page}">
+												<li class="active"><a href="${pageContext.request.contextPath}/rboard/list?crtPage=${page}&keyword=${pMap.keyword}">${page}</a></li>
+											</c:when>
+											<c:otherwise>
+												<li><a href="${pageContext.request.contextPath}/rboard/list?crtPage=${page}&keyword=${pMap.keyword}">${page}</a></li>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+									<c:if test="${pMap.next == true}">
+										<li><a href="${pageContext.request.contextPath}/rboard/list?crtPage=${pMap.endPageNum+1}&keyword=${pMap.keyword}">▶</a></li>
+									</c:if>
+								</ul>
+							</c:otherwise>
+						</c:choose>
 							
 							
 							<div class="clear"></div>

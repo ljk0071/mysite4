@@ -18,14 +18,41 @@ public class RboardDao {
 	@Autowired
 	private SqlSession sS;
 	
-	public List<RboardVo> SelectAll() {
-		List<RboardVo> rList = sS.selectList("rboardbook.SelectAll");
+//	public List<RboardVo> SelectAll(String title) {
+//		List<RboardVo> rList = sS.selectList("rboardbook.SelectAll", title);
+//		return rList;
+//	}
+//	
+	public List<RboardVo> SelectAll(int startRnum, int endRnum) {
+		Map<String, Object> pageMap = new HashMap<String, Object>();
+		pageMap.put("sNum", startRnum);
+		pageMap.put("eNum", endRnum);
+		List<RboardVo> rList = sS.selectList("rboardbook.SelectAll", pageMap);
+		return rList;
+	}
+	
+	public List<RboardVo> SelectAll(int startRnum, int endRnum, String keyword) {
+		Map<String, Object> pageMap = new HashMap<String, Object>();
+		pageMap.put("sNum", startRnum);
+		pageMap.put("eNum", endRnum);
+		pageMap.put("keyword", keyword);
+		List<RboardVo> rList = sS.selectList("rboardbook.SelectAll", pageMap);
 		return rList;
 	}
 	
 	public RboardVo Select(int rNo) {
 		RboardVo rVo = sS.selectOne("rboardbook.Select", rNo);
 		return rVo;
+	}
+	
+	public int SelectTotalCnt() {
+		int totalCnt = sS.selectOne("rboardbook.SelectTotalCnt");
+		return totalCnt;
+	}
+	
+	public int SelectSearchCnt(String title) {
+		int searchCnt = sS.selectOne("rboardbook.SelectSearchCnt", title);
+		return searchCnt;
 	}
 	
 	public int UpdateHit(int rNo) {

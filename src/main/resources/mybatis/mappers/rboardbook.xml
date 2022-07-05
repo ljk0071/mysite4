@@ -2,22 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="rboardbook">
-
-	<select id="SelectAll" resultType="RboardVo">
+	
+	<select id="SelectAll" parameterType="map" resultType="RboardVo">
 		<![CDATA[
-		select r.no as no
-			,r.user_no as userNo
-			,u.name as name
-			,title 
-			,content 
-			,hit 
-			,reg_date as regDate
-			,group_no as groupNo
-			,order_no as orderNo
-			,depth 
+		select rn
+		    ,no  
+		    ,user_no
+		    ,title 
+		    ,content 
+		    ,hit 
+		    ,reg_date
+		    ,group_no
+		    ,order_no
+		    ,depth
+		from ( select rownum rn
+		    ,no  
+		    ,user_no
+		    ,title 
+		    ,content 
+		    ,hit 
+		    ,reg_date
+		    ,group_no
+		    ,order_no
+		    ,depth
+		from (select r.no  
+		    ,user_no
+		    ,title 
+		    ,content 
+		    ,hit 
+		    ,reg_date
+		    ,group_no
+		    ,order_no
+		    ,depth
 		from rboard r, users u 
-		where r.user_no = u.no
-		order by group_no desc, order_no asc
+		where r.user_no = u.no 
+		]]>
+		<if test='keyword != null and keyword != ""'> 
+			and (title like '%'||#{keyword}||'%' 
+        	or content like '%'||#{keyword}||'%') 
+		</if>
+		<![CDATA[
+		order by no desc))
+		where rn >= #{sNum}
+		and rn <= #{eNum}
 		]]>
 	</select>
 	
@@ -36,6 +63,24 @@
 		from rboard r, users u 
 		where r.user_no = u.no 
 		and r.no = #{rNo} 
+		]]>
+	</select>
+	
+	<select id="SelectTotalCnt" resultType="int">
+		<![CDATA[
+			select count(*) count
+			from rboard r, users u
+			where r.user_no = u.no
+		]]>
+	</select>
+	
+	<select id="SelectSearchCnt" parameterType="String" resultType="int">
+		<![CDATA[
+			select count(title) count
+			from rboard r, users u
+			where r.user_no = u.no
+			and (title like '%'||#{keyword}||'%'
+			or content like '%'||#{keyword}||'%')
 		]]>
 	</select>
 	
